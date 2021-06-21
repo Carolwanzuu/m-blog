@@ -2,8 +2,8 @@ import os
 
 class Config:
     # SECRET_KEY = ''
-    # SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://username:password@localhost/blogs'
-    pass
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://moringa:Access@localhost/blog'
+    
 
 class ProdConfig(Config):
     pass
