@@ -1,6 +1,15 @@
-# from . import main
-# from flask_login import login_required
+from flask_wtf import FlaskForm
+from wtforms import StringField, TextAreaField, SubmitField, ValidationError
+from wtforms.validators import Required, Email
+from ..models import User
 
-# @main.route('/movie/review/new/<int:id>', methods = ['GET','POST'])
-# @login_required
-# def new_review(id):
+class ReviewForm(FlaskForm):
+
+    title = StringField('Review title',validators=[Required()])
+    review = TextAreaField('Movie review', validators=[Required()])
+    submit = SubmitField('Submit')
+
+
+class UpdateProfile(FlaskForm):
+    bio = TextAreaField('Tell us something interesting about you.', validators = [Required()])
+    submit = SubmitField('Submit')
