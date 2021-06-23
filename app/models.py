@@ -22,6 +22,13 @@ class User(UserMixin,db.Model):
     comment = db.relationship('Comment', backref = 'users', lazy = 'dynamic')
     pass_secure = db.Column(db.String(255))
 
+    def save_user(self):
+        db.session.add(self)
+        db.session.commit()
+    def delete_user(self):
+        db.session.delete(self)
+        db.session.commit()
+
     @property
     def password(self):
         raise AttributeError('You cannot read the password attribute')
@@ -49,6 +56,25 @@ class Blog:
     posted = db.Column(db.DateTime, default = datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     comments = db.relationship('Comment',backref = 'blog',lazy = 'dynamic')
+
+    def save_blog(self):
+        db.session.add(self)
+        db.session.commit()
+    def delete_blog(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    @classmethod
+    def get_business(cls,user_id):
+        blogs = Blog.query.filter_by(user_id=user_id).all()
+        return Blog
+
+    def __repr__(self):
+       return f'Blog {self.businessname}'
+
+
+
+    
 
 
 
