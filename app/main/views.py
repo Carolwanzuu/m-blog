@@ -1,13 +1,19 @@
 from flask import abort, redirect, render_template, request, url_for
-from flask_login import login_required
+from flask_login import login_required,current_user,login_user,logout_user
 
 from .. import db, photos
-from ..models import User
+from ..models import User,Blog
 from . import main
-from .forms import ReviewForm, UpdateProfile
+from .forms import ReviewForm, UpdateProfile,BlogForm
 
 
 #.....
+
+@main.route('/')
+def index():
+    all_business = Blog.query.filter_by().all()
+    return render_template('index.html',all_blog=all_blog)
+
 @main.route('/user/<uname>')
 def profile(uname):
     user = User.query.filter_by(username = uname).first()
@@ -46,3 +52,25 @@ def update_pic(uname):
         user.profile_pic_path = path
         db.session.commit()
     return redirect(url_for('main.profile',uname=uname))
+
+@main.route('/user/<uname>/blog',methods= ['POST','GET'])
+@login_required
+def upload_blog(uname):
+    user = User.query.filter_by(username = uname).first()
+    form = BlogForm()
+    if user is None:
+        abort(404)
+
+    if form.validate_on_submit():
+        title= form.title.data
+        blog_content = form.blog_content.data
+        author = form.author.data
+        posted= form.posted.data
+        
+
+        
+        blog = Blog(title=title,blog_content=blog_content,author=author,posted=posted)
+        blog.save_blog()
+        return redirect(url_for('main.index'))
+    return render_template('upload_blog.html',form=form,title='Add Blog',legend='Add Blog')
+    
