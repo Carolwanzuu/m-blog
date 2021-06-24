@@ -52,7 +52,7 @@ class User(UserMixin,db.Model):
 
         
 
-class Blog:
+class Blog(db.Model):
     __tablename = 'blog'
 
     id = db.Column(db.Integer,primary_key = True)
@@ -71,14 +71,34 @@ class Blog:
         db.session.commit()
 
     @classmethod
-    def get_business(cls,user_id):
+    def get_blog(cls,user_id):
         blogs = Blog.query.filter_by(user_id=user_id).all()
         return Blog
 
     def __repr__(self):
-       return f'Blog {self.businessname}'
+       return f'Blog {self.name}'
 
+class Comment(db.Model):
+    __tablename__='comments'
+    id=db.Column(db.Integer,primary_key=True)
+    comment=db.Column(db.String)
+    posted=db.Column(db.DateTime,default=datetime.utcnow)
+    user_id=db.Column(db.Integer,db.ForeignKey("users.id"))
+    blog_id=db.Column(db.Integer,db.ForeignKey('blog.id'))
 
+    def save_comment(self):
+        db.session.add(self)
+        db.session.commit()
+    def delete_comment(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def __repr__(self):
+       return f'Comment{self.comment}'
+    @classmethod
+    def get_comments(cls,id):
+        comment=Comment.query.filter_by(blog_id=id).all()
+        return comment
 
     
 

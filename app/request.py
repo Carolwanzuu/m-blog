@@ -13,7 +13,7 @@ def get_quotes():
     '''
     Function that gets the json response to our url request
     '''
-    get_quotes_url = base_url
+    get_quotes_url = 'http://quotes.stormconsultancy.co.uk/random.json'
 
     with urllib.request.urlopen(get_quotes_url) as url:
         get_quotes_data = url.read()

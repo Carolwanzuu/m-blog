@@ -16,6 +16,7 @@ def register():
         user = User(email = form.email.data, username = form.username.data,password = form.password.data)
         db.session.add(user)
         db.session.commit()
+        print(user.email)
 
         mail_message("Welcome to My Blogs","email/welcome_user",user.email,user=user)
 

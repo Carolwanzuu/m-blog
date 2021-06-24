@@ -15,8 +15,12 @@ class UpdateProfile(FlaskForm):
     submit = SubmitField('Submit')
 
 class BlogForm(FlaskForm):
-    title = TextAreaField('Enter Business Name',validators = [Required()])
-    blog_content = TextAreaField('Enter Number',validators = [Required()])
-    author = TextAreaField('Tell us about your business',validators = [Required()])
-    posted = StringField('Enter the day of posting')
+    title = TextAreaField('Enter Title',validators = [Required()])
+    blog_content = TextAreaField('Enter blog conteny',validators = [Required()])
+    author = TextAreaField('Name of author',validators = [Required()])
+   
     submit = SubmitField('Submit')
+
+class CommentsForm(FlaskForm):
+    comment=TextAreaField('Type comment:', validators=[DataRequired()])
+    submit=SubmitField('Post Comment')
