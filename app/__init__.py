@@ -7,12 +7,15 @@ from flask_uploads import UploadSet, configure_uploads, IMAGES
 from flask_mail import Mail
 
 
+
+
+bootstrap = Bootstrap()
+db = SQLAlchemy()
+
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'
 login_manager.login_view = 'auth.login'
 
-bootstrap = Bootstrap()
-db = SQLAlchemy()
 photos = UploadSet('photos', IMAGES)
 mail = Mail()
 
@@ -20,6 +23,10 @@ def create_app(config_name):
     app = Flask(__name__)
     #creating app configurations
     app.config.from_object(config_options[config_name])
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    #configure UploadSet
+    configure_uploads(app, photos)
 
     #initializing flask extensions
     bootstrap.init_app(app)
@@ -27,8 +34,7 @@ def create_app(config_name):
     login_manager.init_app(app)
     mail.init_app(app)
 
-    #configure UploadSet
-    configure_uploads(app, photos)
+    
 
 
     # Registering the blueprint
